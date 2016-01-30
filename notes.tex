@@ -1,0 +1,135 @@
+%&latex
+\documentclass[a4paper]{report}
+\usepackage{commons/commons}
+\usepackage{commons/note_style}
+\usepackage[normalem]{ulem}
+\usepackage{comment}
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\sffamily\big\bfseries\color{black}}
+  {\chaptertitlename\ \thechapter}{5pt}{\huge}
+%\excludecomment{figure}
+\usepackage{amsbsy}
+\usepackage{amstext}
+
+
+\begin{document}
+
+%+Title
+\title{Machine Learning Quicksheet}
+\author{Daniel D. Zhang}
+\date{Winter 2015. \today}
+\maketitle
+%-Title
+
+%+Abstract
+%\begin{abstract}
+%This is the notes for CSE 232A.
+%\end{abstract}
+%-Abstract
+
+%+Contents
+\tableofcontents
+%-Contents
+\chapter*{Preface}
+\section*{Acronyms}
+\begin{obeylines}
+\rih{distr}. Distribution
+\rih{Pr}. Probability
+\end{obeylines}
+\chapter{Introduction}
+Mapping
+$$
+f: \mat{X} \ra \mat{Y}. 
+$$
+Outline 
+\begin{enumerate}
+\item Nonparametric methods
+\begin{enumerate}
+\item NN (nearest neighbor)
+\item Decision tree 
+
+$\ra$ benefits: 1) unbounded input size; 2) arbitrary complex model
+\end{enumerate}
+\item Classification with parameterized models 
+
+General ways to classify 
+\begin{enumerate}
+\item Generative, generative probability - Bayes, Fisher 
+\item Discriminative, boundary - SVM, logistic regression 
+\end{enumerate}
+\item Combining classifiers 
+\item Representation learning 
+\end{enumerate}
+
+\chapter{Nearest Neighbor}
+\section{kNN}
+\subsection{Parameter Selection $k$}
+\begin{enumerate}
+\item Hold-out set. Choose a subset $V\subset S$ as a validation set 
+$$
+k = \arg\min_k \sum_{(x, y)\in V} \textbf{1}(\Gamma_k(S-V, x)\neq y)
+$$
+\item Leave-one-out cross-validation 
+$$
+k = \arg\min_k \sum_{(x, y)\in S} \textbf{1}(\Gamma_k(S-\{(x, y)\}, x)\neq y)
+$$
+\end{enumerate}
+\subsection{Distance function}
+\subsubsection{$l_p$ norms}
+
+\subsubsection{Metric space} 
+distance function $d: \mat{X}\times\mat{X}\ra \R$ is a metric iff:
+\begin{enumerate}
+\item $\geq0$
+\item $=0$ iff equal
+\item symmetry
+\item triangle inequality
+\end{enumerate}
+
+\section{Statistical Learning Theory}
+\begin{enumerate}
+\item distribution over $x$: $\mu(x)$
+\item distribution over $P(y=1|x)$: $\eta(x)$
+\item classification rule $h: \mat{X}\ra\{0, 1\}$
+\item bayes risk: $R(h)=Pr\big(h(X)\neq Y\big)$
+\item bayes-optimal classifier
+\begin{eqnarray*}
+h^*(x) = \left\{ \begin{array}{rl}
+  1 &\mbox{ if }\eta(x)>\frac{1}{2}\\
+  0 &\mbox{ ow}
+       \end{array} \right.       
+\end{eqnarray*}
+with mim risk:
+$$
+R(h^*) = \mat{E}
+$$
+\end{enumerate}
+
+
+
+
+
+\chapter{Decision Tree}
+
+\chapter{Generative Model}
+\section{Gaussian}
+\subsection{Bivariate Gaussian}
+\begin{align*}
+\mu &= [\mu_X, \mu_Y]^T \\
+\Sigma &= \begin{bmatrix}
+\Sigma_{XX} & \Sigma_{XY} \\
+\Sigma_{YX} & \Sigma_{YY} 
+\end{bmatrix}\\
+&= \begin{bmatrix}
+var(X) & cov(X,Y) \\
+cov(X,Y) & var(Y)
+\end{bmatrix}
+\end{align*}
+\section{Linear Algebra}
+\begin{align*}
+A \vec\mu_i &=\lambda_i \vec\mu_i\\
+A &= Q\Lambda Q^T \\
+A^{-1} &=Q\Lambda^{-1}Q^T
+\end{align*}
+\end{document}
