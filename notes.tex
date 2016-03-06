@@ -582,7 +582,7 @@ Linkage
 \end{enumerate}
 
 
-\chapter{Informative Projection}
+\chapter{Linear Projection}
 \section{Projection}
 \begin{align*}
 x &\in \R^p\\
@@ -661,4 +661,69 @@ $k$ latent directions.
 
 What the meanings of $n, p, k$ are. 
 
+
+\chapter{Non-linear Projections}
+\section{Manifold learning}
+\subsection{ISOMAP}
+ISOMAP finds \textit{geodesic distances} among data points.
+
+Euclidian distance approximates geodesic distance in neighboring point 
+
+Steps:
+\begin{enumerate}
+\item Construct neighborhood graph: threshold $\tau$
+\item Compute geodesic distance: Floyd Algorithm for shortest path
+\end{enumerate}
+
+\subsection{Distance-preserving Embedding}
+Distance matrix:
+$$
+D_{ij} = ||z^{(i)}-z^{(j)}||^2
+$$
+
+Gram matrix:
+$$
+B_{ij} = z^{(i)}\cdot z^{(j)}
+$$
+
+Relationship:
+$$
+B = -\frac{1}{2} HDH
+$$
+
+, where $H=I_n - \frac{1}{n}11^T$.
+
+Solve $z^{(i)}$
+
+\begin{align*}
+B &= U\Lambda U^T \\
+&= ZZ^T \\
+Z &= U\Lambda^{1/2} \\
+\end{align*}
+
+In case of taking sqrt of negative, set negative numbers to 0. $Z=U\Lambda_+^{1/2}$
+\section{Dictionary learning}
+\subsection{Dictionary}
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=.70]{dicLearn}}
+\caption{Dictionary Learning}
+\label{fig:dicLearn}
+\end{figure}
+
+Generalization of PCA
+\begin{enumerate}
+\item PCA
+\item Indpt component analysis
+\item Spare encoding: $\min L(\phi, S) $
+\begin{align*}
+L(\phi, S) &= ||X-\PhiS||_F^2 - \lambda\cdot sparsity(S) \\
+&= \sum_{i=1}^n \Big(||x^{(i)}-\phi s^{(i)}||^2-\lambda\cdot sparsity(s^{(i)})\Big)
+\end{align*}
+\end{enumerate}
+
+\subsection{Autoencoder}
+$$
+x \approx D(E(x))
+$$
 \end{document}
