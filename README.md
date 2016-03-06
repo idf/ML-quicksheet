@@ -1,7 +1,7 @@
-# Advanced Database Quicksheet
+# ML-quicksheet
+Quicksheet for Machine Learning
 
 ## Sample Page
-![](img/readme_screenshot.png)
 
 ## PDF Download
-[notes.pdf](https://github.com/idf/Advanced-Database-Quicksheet/releases)
+[notes.pdf](https://github.com/idf/ML-Quicksheet/releases)
