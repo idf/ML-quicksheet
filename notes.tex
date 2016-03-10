@@ -255,7 +255,7 @@ Three cases of multivariate Gaussian generative model classification:
 \section{Linear Algebra}
 \subsection{PSD}
 $$
-A \text{ is real sym} \wedge\forall z\in \R^p\cdot z^T Az \geq 0
+A \text{ is real \textbf{sym}} \wedge\forall z\in \R^p\cdot z^T Az \geq 0
 $$
 \subsection{eigen}
 \begin{align*}
@@ -269,6 +269,13 @@ A &= Q\Lambda Q^T \\
 A^{-1} &=Q\Lambda^{-1}Q^T
 \end{align*}
 
+\subsection{SVD}
+\begin{align*}
+A &= U\Lambda V^T\\
+AA^T &= U\Lambda^2U^T \\
+A^TA &= V\Lambda^2V^T
+\end{align*}
+
 \chapter{Discriminative Models}
 Model $P(y|x)$ directly.
 \section{Logistic Regression model}
@@ -276,13 +283,18 @@ Logistic regression is the discriminative model corresponding to Guassian gen mo
 
 Loss function:
 $$
-\mat{L}(w) = -\sum_{i} \ln {P_w(y^{(i)}|x^{(i)})} = \sum_{i} \ln {\Big(1+\exp(-y^{(i)}\big(w^T x^{(i)})\big)\Big)}
+\mat{L}(w) = -\sum_{i} \ln {P_w(y^{(i)}|x^{(i)})} = (-)(-) \sum_{i} \ln {\Big(1+\exp(-y^{(i)}\big(w^T x^{(i)})\big)\Big)}
 $$
 
 Min $\mat{L}(w)$ by:
 \begin{enumerate}
 \item Gradient descent
 \item Newton-Raphson
+$$
+w = w -\mat{H}^{-1} \frac{\partial}{\partial w} \mat{L}(w)
+$$
+
+, where $\mat H_{jk} = \frac{\partial^2}{\partial w_j \partial w_k} \mat L(w)$.
 \end{enumerate}
 
 \chapter{Linear Classification}
@@ -304,27 +316,24 @@ Converge after this number of updates:
 $$
 \frac{R^2}{\gamma^2}
 $$
-
+TODO regularization 
 , where $R=\max ||x^{(i)}||, \gamma $ is the margin s.t. $y^{(i)}(w^T x^{(i)}) \geq \gamma$. 
 
-Derivations TODO. 
+Derivations. 
 
 \section{SVM}
-Target linear classifier:
+\textbf{Target} linear classifier:
 $$
 y^{(i)} (w^T x^{(i)}+b) \geq 1 
 $$
 
 Solve boundary $\gamma$:
 \begin{align*}
-w^T x + b &=1 \\
-w^T(x-\gamma \hat w)+b &= 0
+w^T x + b &=1 \text{ // on boundary}\\
+w^T(x-\gamma \hat w)+b &= 0 \text{ // on separator}
 \end{align*}
 
 Notice that $w \cdot \hat w=||w||$.
-
-
-TODO regularization 
 
 \textbf{Primal}
 \begin{align*}
@@ -379,7 +388,7 @@ Mapping function $\phi(x)$.
 \section{Kernel Trick}
 Weights vector $w$ is a linear combination of $\phi(X): w=A^T\phi(X)$.
 
-Compute $\phi(x)\cdot \phi(x')$, or $<\phi(x), \phi(x')>$, without explicitly compute $\phi(.)$. 
+Compute $\phi(x)\cdot \phi(x')$, or $<\phi(x), \phi(x')>$, without explicitly constructing $\phi(.)$. 
 
 \section{Kernel Functions}
 General Form 
@@ -412,7 +421,7 @@ $$
 
 , where $\mat{K}\in \R^{T\times T}$.
 
-Mercer's condition: $\mat{K}$ is PSD.
+\textbf{Mercer's} condition: $\mat{K}$ is PSD.
 
 \chapter{Richer Output Space} 
 \section{Multiclass classification}
@@ -431,7 +440,7 @@ $$
 $$
 \item Perceptron: iterative improvement.
 
-Given a misclassified point $(x, y)$
+Given a misclassified point $(x, y)$, with misclassified label $\hat y$.
 \begin{align*}
 w_y &= w_y + x \\
 w_{\hat y} &= w_{\hat y} - x
@@ -494,7 +503,7 @@ $$
 e^{-\gamma^2T/2}
 $$
 
-, where $|\sum_i D_t(i)y^{(i)}h_t(x^{(i)})|\geq \gamma$ differs from random by margin $\gamma$.
+, where $|\sum_i D_t(i)y^{(i)}h_t(x^{(i)})|\geq \gamma$ differs from random by \textbf{margin} $\gamma$.
 
 \subsection{Enhanced Sapce}
 Enhanced space: $\forall h \in \mat{H}$ corresponds to a feature 
@@ -628,6 +637,10 @@ $$
 , where $U^T$ projects $\vec x$ to M's coordinates, $\Lambda$ scales $\vec x$, and then  $U$ projects back to original coordinates.
 \section{Low-Rank Approximation}
 \subsection{SVD}
+\begin{align*}
+M &= U\Lambda V^T  \\
+&= \sum_i \sigma_i u_i v_i^T
+\end{align*}
 $M$ is not sym. $M\in \R^{p\times q}$
 \begin{align*}
 M &= U \Lambda V^T \\
@@ -635,7 +648,7 @@ M &=UW^T \\
 \hat M &=\hat U \hat W^T
 \end{align*}
 
-, where $\hat U$ is the first $k$ cols of $U$, $\hat W^T$ is the first $k$ rows of $\hat W$. 
+, where $\hat U$ is the first $k$ cols of $U$, $\hat W^T$ is the first $k$ rows of $\hat W$. For low-rank approximation. 
 
 \subsection{Applications}
 \subsubsection{Latent semantic indexing (LSI)}
@@ -675,7 +688,7 @@ Steps:
 \item Compute geodesic distance: Floyd Algorithm for shortest path
 \end{enumerate}
 
-\subsection{Distance-preserving Embedding}
+\subsection{Distance-preserving Embedding MDS} 
 Distance matrix:
 $$
 D_{ij} = ||z^{(i)}-z^{(j)}||^2
@@ -726,4 +739,66 @@ L(\phi, S) &= ||X-\PhiS||_F^2 - \lambda\cdot sparsity(S) \\
 $$
 x \approx D(E(x))
 $$
+
+\chapter{Prediction with Expert Advice}
+\begin{itemize}
+\item Statistical model: ML and distribution P
+\item Non-statistical model: no assuming dist P
+\end{itemize}
+
+\section{Objective}
+Notations:
+\begin{enumerate}
+\item Expert advices: collections of classifiers $\mat H$.
+\item data: $x_t \in \mat X, y_t \in \mat Y$.
+\end{enumerate}
+
+
+\textbf{Objective}: Do as well as the best classifier from $\mat H$ in hindsight. i.e. min the regret. 
+
+\textbf{Binary prediction}:
+$$
+regret(T) = \sum_t \ell(y_t, \hat y_t) - \min_{h\in \mat H} \sum_t \ell(y_t, h(x_t))
+$$
+
+, where $\ell$ is the loss function. 
+
+\textbf{Randomized prediction}: choose a distribution over the expert predictions: $$
+p_t = (p_t^{(1)},...,p_t^{(N)})
+$$
+
+Incur expected loss $\E_{i\sim p_t}[\ell_t^{(i)}]$, where $\ell_t^{(i)}=\ell(y_t, h_i(x_t))$.
+
+regret = expected loss - loss of best learner: 
+$$
+regret(T) = \sum_{t=1}^T \sum_{i=1}^N p_t^{(i)}\ell_t^{(i)} - \min_{1\leq i \leq N}\sum_{t=1}^T\ell_t^{(i)}
+$$
+
+\section{Algorithm}
+The hedge algorithm
+
+At iteration $t$, for $i$-th expert:
+\begin{align*}
+p_t^{(i)} &\propto p_{t-1}^{(i)} e^{-\eta \ell_{t-1}^{(i)}} \\
+p_t^{(i)} &\propto e^{\eta L_{t-1}^{(i)}}
+\end{align*}
+
+, where $L^{(i)}_t = \sum_{t'\leq t} l^{(i)}_{t'}$, the cumulative expected loss. 
+
+\textbf{Theorem}. Bound the cumulative expected loss of hedge algorithm:
+$$
+L^\text{Hedge}_T\leq \min_{1\leq i \leq N} \frac{\eta L^{(u)}_T+\ln N}{1-e^{-\eta}}
+$$
+
+Tuning $\eta$ to find the lower bound of $L^\text{Hedge}_T$:
+
+Setting 
+$$
+\eta = \ln \Bigg(1+\sqrt{\frac{2\ln N}{\tilde L}}\Bigg)
+$$
+
+, where $\min_i L_i^T \leq \tilde L $. 
+
+Then $L_T^\text{Hedge}=O(\sqrt{2T\ln N})$
 \end{document}
+
