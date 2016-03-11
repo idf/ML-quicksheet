@@ -631,15 +631,15 @@ $$
 
 Spectral decomposition. 
 $$
-M = U\Lambda U^T
+M = U\Lambda U^\top
 $$
 
 , where $U^T$ projects $\vec x$ to M's coordinates, $\Lambda$ scales $\vec x$, and then  $U$ projects back to original coordinates.
 \section{Low-Rank Approximation}
 \subsection{SVD}
 \begin{align*}
-M &= U\Lambda V^T  \\
-&= \sum_i \sigma_i u_i v_i^T
+M &= U\Lambda V^\top  \\
+&= \sum_i \sigma_i u_i v_i^\top
 \end{align*}
 $M$ is not sym. $M\in \R^{p\times q}$
 \begin{align*}
@@ -704,7 +704,7 @@ $$
 B = -\frac{1}{2} HDH
 $$
 
-, where $H=I_n - \frac{1}{n}11^T$.
+, where $H=I_n - \frac{1}{n}11^\top$.
 
 Solve $z^{(i)}$
 
