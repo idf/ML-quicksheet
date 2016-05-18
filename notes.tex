@@ -66,6 +66,7 @@ General ways to classify
 \chapter{Nearest Neighbor}
 \section{kNN}
 \subsection{Parameter Selection $k$}
+Let $\Gamma_k(S, x)$ be the prediction made on $x$ using its $k$-NN in $S.$
 \begin{enumerate}
 \item Hold-out set. Choose a subset $V\subset S$ as a validation set 
 $$
@@ -164,7 +165,7 @@ $$
 Notation-wise, $i$ is for data point index, $j$ is for class label index, $d$ for dim index.
 \subsection{Model $P_i(x)$}
 \subsubsection{Naive Bayes}
-Assume indpt among the dimension:
+Assume indpt among the dimensions:
 \begin{align*}
 P_j(x) &= \prod_d P_{jd}(x_d) \\
 P_{jd}(x_d) &= Pr(x_d|y=j) 
@@ -216,7 +217,7 @@ P(y|x)\propto P(x|y)P(y)&=P(y)\prod_{d=1}^{D}P(v_d|y)^{|c_d|}\\
 \subsection{Multivariate Gaussian}
 \subsubsection{Bivariate}
 \begin{align*}
-\mu &= [\mu_X, \mu_Y]^T \\
+\mu &= [\mu_X, \mu_Y]^\top \\
 \Sigma &= \begin{bmatrix}
 \Sigma_{XX} & \Sigma_{XY} \\
 \Sigma_{YX} & \Sigma_{YY} 
@@ -232,19 +233,19 @@ P(y|x)\propto P(x|y)P(y)&=P(y)\prod_{d=1}^{D}P(v_d|y)^{|c_d|}\\
 \subsubsection{Multivariate}
 pdf:
 $$
-p(x) = \frac{1}{\sqrt{(2\pi)^p|\Sigma|}}\exp\Big(-\frac{1}{2}(\vec x-\vec\mu)^T\Sigma^{-1}(\vec x-\vec\mu)\Big)
+p(x) = \frac{1}{\sqrt{(2\pi)^p|\Sigma|}}\exp\Big(-\frac{1}{2}(\vec x-\vec\mu)^\top\Sigma^{-1}(\vec x-\vec\mu)\Big)
 $$
-, where $\vec\mu=\E \vec x, \Sigma=\E(\vec x-\vec\mu)(\vec x-\vec\mu)^T=(X-\vec\mu)(X-\vec\mu)^T$. Algebraically, $\Sigma_{ij}=\operatorname{cov}(X_i, X_j)$. 
+, where $\vec\mu=\E \vec x, \Sigma=\E(\vec x-\vec\mu)(\vec x-\vec\mu)^\top=(X-\vec\mu)(X-\vec\mu)^\top$. Algebraically, $\Sigma_{ij}=\operatorname{cov}(X_i, X_j)$. 
 
-The $(\vec x-\vec\mu)^T\Sigma^{-1}(\vec x-\vec\mu)$ can be rewrite as: 
+The $(\vec x-\vec\mu)^\top\Sigma^{-1}(\vec x-\vec\mu)$ can be rewrite as: 
 $$
-(\vec x-\vec\mu)^T\Sigma^{-1}(\vec x-\vec\mu) = \sum_{i, j} \Sigma^{-1}_{ij} (\vec x_i-\vec \mu_i)(\vec x_j-\vec \mu_j)
+(\vec x-\vec\mu)^\top\Sigma^{-1}(\vec x-\vec\mu) = \sum_{i, j} \Sigma^{-1}_{ij} (\vec x_i-\vec \mu_i)(\vec x_j-\vec \mu_j)
 $$
 
 \subsubsection{Classification}
 \begin{align*}
-\pi_1 P_1(x) > \pi_2 P_2(x) &\equiv x^T Mx+2w^Tx \geq \theta \\
-&\equiv x^T\Big(-\frac{1}{2}(\Sigma_1^{-1}-\Sigma_2^{-1})\Big)x+2\Big(\Sigma_1^{-1}\mu_1-\Sigma_2^{-1}\mu_2\Big)^Tx \geq \theta
+\pi_1 P_1(x) > \pi_2 P_2(x) &\equiv x^\top Mx+2w^Tx \geq \theta \\
+&\equiv x^\top\Big(-\frac{1}{2}(\Sigma_1^{-1}-\Sigma_2^{-1})\Big)x+2\Big(\Sigma_1^{-1}\mu_1-\Sigma_2^{-1}\mu_2\Big)^Tx \geq \theta
 \end{align*}
 Three cases of multivariate Gaussian generative model classification: 
 \begin{enumerate}
@@ -255,7 +256,7 @@ Three cases of multivariate Gaussian generative model classification:
 \section{Linear Algebra}
 \subsection{PSD}
 $$
-A \text{ is real \textbf{sym}} \wedge\forall z\in \R^p\cdot z^T Az \geq 0
+A \text{ is real \textbf{sym}} \wedge\forall z\in \R^p\cdot z^\top Az \geq 0
 $$
 \subsection{eigen}
 \begin{align*}
@@ -265,15 +266,15 @@ A \vec\mu_i &=\lambda_i \vec\mu_i\\
 \end{align*}
 Spectral decomposition 
 \begin{align*}
-A &= Q\Lambda Q^T \\
-A^{-1} &=Q\Lambda^{-1}Q^T
+A &= Q\Lambda Q^\top \\
+A^{-1} &=Q\Lambda^{-1}Q^\top
 \end{align*}
 
 \subsection{SVD}
 \begin{align*}
-A &= U\Lambda V^T\\
-AA^T &= U\Lambda^2U^T \\
-A^TA &= V\Lambda^2V^T
+A &= U\Lambda V^\top\\
+AA^\top &= U\Lambda^2U^\top \\
+A^TA &= V\Lambda^2V^\top
 \end{align*}
 
 \chapter{Discriminative Models}
@@ -283,7 +284,7 @@ Logistic regression is the discriminative model corresponding to Guassian gen mo
 
 Loss function:
 $$
-\mat{L}(w) = -\sum_{i} \ln {P_w(y^{(i)}|x^{(i)})} = (-)(-) \sum_{i} \ln {\Big(1+\exp(-y^{(i)}\big(w^T x^{(i)})\big)\Big)}
+\mat{L}(w) = -\sum_{i} \ln {P_w(y^{(i)}|x^{(i)})} = (-)(-) \sum_{i} \ln {\Big(1+\exp(-y^{(i)}\big(w^\top x^{(i)})\big)\Big)}
 $$
 
 Min $\mat{L}(w)$ by:
@@ -302,7 +303,7 @@ $$
 Homogeneous linear separators. Adding extra feature (bias) to $\tilde x=(x,1)\in \R^{p+1}$. 
 Target linear classifier:
 $$
-y^{(i)}(w^T x^{(i)}) > 0
+y^{(i)}(w^\top x^{(i)}) > 0
 $$
 \section{Perceptron}
 Core algorithm:
@@ -310,27 +311,33 @@ $$
 w = w+yx
 $$
 
-, where $(x, y)$ is \textbf{misclassified}. 
+, where $(x, y)$\footnote{More formally, $(\vec x, y)$} is \textbf{misclassified}. 
 
 Converge after this number of updates: 
 $$
 \frac{R^2}{\gamma^2}
 $$
-TODO regularization 
-, where $R=\max ||x^{(i)}||, \gamma $ is the margin s.t. $y^{(i)}(w^T x^{(i)}) \geq \gamma$. 
 
-Derivations. 
+, where $R=\max ||x^{(i)}||, \gamma $ is the margin s.t. $y^{(i)}(w^\top x^{(i)}) \geq \gamma$. If margin is large, converge fast. 
+
+Derivations:
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=1.30]{perceptronTheory}}
+\caption{Perceptron Proof, Theory}
+\label{fig:perceptronTheory}
+\end{figure}
 
 \section{SVM}
 \textbf{Target} linear classifier:
 $$
-y^{(i)} (w^T x^{(i)}+b) \geq 1 
+y^{(i)} (w^\top x^{(i)}+b) \geq 1 
 $$
 
-Solve boundary $\gamma$:
+Solve \textbf{margin} $\gamma$:
 \begin{align*}
-w^T x + b &=1 \text{ // on boundary}\\
-w^T(x-\gamma \hat w)+b &= 0 \text{ // on separator}
+w^\top x + b &=1 \text{ // on boundary}\\
+w^\top(x-\gamma \hat w)+b &= 0 \text{ // on separator}
 \end{align*}
 
 Notice that $w \cdot \hat w=||w||$.
@@ -351,7 +358,7 @@ Notice that $w \cdot \hat w=||w||$.
 Optimality and support vectors. 
 \begin{enumerate}
 \item $w=\sum_i \alpha_i y^{(i)} x^{(i)}$ 
-\item $\alpha_i >0 \ra y^{(i)}(w^T x^{(i)}+b)=1$, and $x^{(i)}$ is support vector.
+\item $\alpha_i >0 \ra y^{(i)}(w^\top x^{(i)}+b)=1$, and $x^{(i)}$ is support vector.
 \end{enumerate}
 
 With regularization (slack $\xi_i$)
@@ -386,7 +393,7 @@ Convex loss functions to approximate 0-1 loss functions. 0-1 loss function is th
 \section{Kernel}
 Mapping function $\phi(x)$. 
 \section{Kernel Trick}
-Weights vector $w$ is a linear combination of $\phi(X): w=A^T\phi(X)$.
+Weights vector $w$ is a linear combination of $\phi(X): w=A^\top\phi(X)$.
 
 Compute $\phi(x)\cdot \phi(x')$, or $<\phi(x), \phi(x')>$, without explicitly constructing $\phi(.)$. 
 
@@ -521,7 +528,9 @@ is a linear classifier in the enhanced space $\phi$.
 Boosting is a \textbf{coordinate descent} procedure for minimizing the loss.
 
 \section{Bagging}
-Sample with replacement, majority vote.
+Sample with replacement, majority vote. 
+
+Note, if without replacement, when sample size = $T$, then all sample sets are the same. 
 
 \section{Random Forest}
 Sample $n'$ with replacement, sample $k$ features, majority vote.
@@ -540,7 +549,11 @@ $$
 Sum of distance to the nearest center. 
 
 \subsection{Algorithm}
-Lloyd’s $k$-means algorithm
+Lloyd’s $k$-means algorithm - EM\ algorithm
+\begin{align*}
+S_i^{(t)}& = \big \{ x_p : \| x_p - m^{(t)}_i \|^2 \le \big \| x_p - m^{(t)}_j \|^2 \ \forall j, 1 \le j \le k \big\}  \\
+m^{(t+1)}_i &= \frac{1}{|S^{(t)}_i|} \sum_{x_j \in S^{(t)}_i} x_j 
+\end{align*}
 
 \subsection{Initialization}
 \begin{enumerate}
@@ -560,6 +573,8 @@ Pr(x) = \sum_k \pi_k N(\mu_k, \Sigma_k)
 $$
 
 \subsection{Learning}
+Learning the parameters of $Pr(x)$ (i.e. $\pi, \mu, \Sigma$) s.t.
+
 $$
 \max Pr(data|\sum_k \pi_k P_k)
 $$
@@ -577,7 +592,7 @@ M-step for parametric learning
 \begin{align*}
 \pi_j &= \frac{1}{n} \sum_{i=1}^n w_{ij} \\
 \mu_j &= \frac{1}{n\pi_j} \sum_{i=1}^n w_{ij} x_i \\
-\Sigma_j &= \frac{1}{n\pi_j} \sum_{i=1}^n w_{ij}(x_i-\mu_j)(x_i-\mu_j)^T
+\Sigma_j &= \frac{1}{n\pi_j} \sum_{i=1}^n w_{ij}(x_i-\mu_j)(x_i-\mu_j)^\top
 \end{align*}
 \begin{align*}
 
@@ -595,29 +610,29 @@ Linkage
 \section{Projection}
 \begin{align*}
 x &\in \R^p\\
-U^T x &\in \R^k \\
+U^\top x &\in \R^k \\
 UU^Tx &\in \R^p
 \end{align*}
 
 \section{PCA}
 $x \mapsto$ a single direction $u$:
 
-The mean is $u^t\mu$
+The mean is $u^\top\mu$
 \begin{align*}
-\E(u^T X) &= u^T \E(X) \\
-&= u^T \mu
+\E(u^\top X) &= u^\top \E(X) \\
+&= u^\top \mu
 \end{align*}
 
-The variance is $u^T \Sigma u$:
+The variance is $u^\top \Sigma u$:
 \begin{align*}
-var(u^T X) &= \E(u^T X-u^T \mu)^2\\
-&= \E(u^T(X-\mu))^2\\
-&= \E(u^T(X-\mu)(X-\mu)^Tu)\\
-&= u^T \E(X-\mu)(X-\mu)^T u  \\
-&= u^T \Sigma u
+var(u^\top X) &= \E(u^\top X-u^\top \mu)^2\\
+&= \E(u^\top(X-\mu))^2\\
+&= \E(u^\top(X-\mu)(X-\mu)^\top u)\\
+&= u^\top \E(X-\mu)(X-\mu)^\top u  \\
+&= u^\top \Sigma u
 \end{align*}
 
-, where $X-\mu$ is a mat. 
+, where $X-\mu$ is a mat. Notice the order of mat multiplication when transforming $a^2$ to $aa^\top$ where $a$ is a scalar.
 
 $x \mapsto$ multiple directions:
 
@@ -634,7 +649,7 @@ $$
 M = U\Lambda U^\top
 $$
 
-, where $U^T$ projects $\vec x$ to M's coordinates, $\Lambda$ scales $\vec x$, and then  $U$ projects back to original coordinates.
+, where $U^\top$ projects $\vec x$ to M's coordinates, $\Lambda$ scales $\vec x$, and then  $U$ projects back to original coordinates.
 \section{Low-Rank Approximation}
 \subsection{SVD}
 \begin{align*}
@@ -643,12 +658,12 @@ M &= U\Lambda V^\top  \\
 \end{align*}
 $M$ is not sym. $M\in \R^{p\times q}$
 \begin{align*}
-M &= U \Lambda V^T \\
-M &=UW^T \\
-\hat M &=\hat U \hat W^T
+M &= U \Lambda V^\top \\
+M &=UW^\top \\
+\hat M &=\hat U \hat W^\top
 \end{align*}
 
-, where $\hat U$ is the first $k$ cols of $U$, $\hat W^T$ is the first $k$ rows of $\hat W$. For low-rank approximation. 
+, where $\hat U$ is the first $k$ cols of $U$, $\hat W^\top$ is the first $k$ rows of $\hat W$. For low-rank approximation. 
 
 \subsection{Applications}
 \subsubsection{Latent semantic indexing (LSI)}
@@ -657,7 +672,7 @@ $k$ topics. Topic is latent.
 \begin{figure}[!htp]
 \centering
 \subfloat{\includegraphics[scale=.80]{lsi}}
-\caption{Latent semantic indexing}
+\caption{Latent semantic indexing. Notice that mat $\Psi$ is col-wise stacked by latent vectors rather than the data points. }
 \label{fig:lsi}
 \end{figure}
 
@@ -668,7 +683,7 @@ $k$ latent directions.
 \begin{figure}[!htp]
 \centering
 \subfloat{\includegraphics[scale=1.0]{collaborativeFiltering}}
-\caption{Collaboraitive Filtering}
+\caption{Collaborative Filtering. Notice that mat $W^\top$ is row-wise stacked by data points rather than latent vectors. }
 \label{fig:collaborativeFiltering}
 \end{figure}
 
@@ -704,13 +719,13 @@ $$
 B = -\frac{1}{2} HDH
 $$
 
-, where $H=I_n - \frac{1}{n}11^\top$.
+, where $H=I_n - \frac{1}{n}\boldsymbol1\boldsymbol1^\top$.
 
 Solve $z^{(i)}$
 
 \begin{align*}
-B &= U\Lambda U^T \\
-&= ZZ^T \\
+B &= U\Lambda U^\top \\
+&= ZZ^\top \\
 Z &= U\Lambda^{1/2} \\
 \end{align*}
 
@@ -736,9 +751,18 @@ L(\phi, S) &= ||X-\PhiS||_F^2 - \lambda\cdot sparsity(S) \\
 \end{enumerate}
 
 \subsection{Autoencoder}
+Use fewer then $T$ hidden notes to represent the $T$ data points. 
+
 $$
 x \approx D(E(x))
 $$
+
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=1.20]{autoencoder}}
+\caption{Autoencoder}
+\label{fig:autoencoder}
+\end{figure}
 
 \chapter{Prediction with Expert Advice}
 \begin{itemize}
@@ -771,7 +795,7 @@ Incur expected loss $\E_{i\sim p_t}[\ell_t^{(i)}]$, where $\ell_t^{(i)}=\ell(y_t
 
 regret = expected loss - loss of best learner: 
 $$
-regret(T) = \sum_{t=1}^T \sum_{i=1}^N p_t^{(i)}\ell_t^{(i)} - \min_{1\leq i \leq N}\sum_{t=1}^T\ell_t^{(i)}
+regret(T) = \sum_{t=1}^\top \sum_{i=1}^N p_t^{(i)}\ell_t^{(i)} - \min_{1\leq i \leq N}\sum_{t=1}^\top\ell_t^{(i)}
 $$
 
 \section{Algorithm}
@@ -797,7 +821,7 @@ $$
 \eta = \ln \Bigg(1+\sqrt{\frac{2\ln N}{\tilde L}}\Bigg)
 $$
 
-, where $\min_i L_i^T \leq \tilde L $. 
+, where $\min_i L_i^\top \leq \tilde L $. 
 
 Then $L_T^\text{Hedge}=O(\sqrt{2T\ln N})$
 \end{document}
