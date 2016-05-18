@@ -824,5 +824,64 @@ $$
 , where $\min_i L_i^\top \leq \tilde L $. 
 
 Then $L_T^\text{Hedge}=O(\sqrt{2T\ln N})$
+
+\chapter{Neural Network}
+
+\section{Supervised Neural Network}
+
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=1.20]{nnBasic}}
+\caption{Supervised Neural Network}
+\label{fig:nnBasic}
+\end{figure}
+
+\subsection{Forward Propagation}
+
+$$
+a^{(l+1)} = \sigma\Big(W^{(l)}a^{(l)}+b^{(l)}\Big)
+$$
+
+, where $W_{ij}^{l}$ denotes the weight from node $j$ at layer $l$ to node $i$ at layer $l+1$. $b_i^{(l)}$ is the bias for node $i$ at layer $l+1$. $a_i^{(l)}$ is the node $i$ at layer $l$. $\sigma(.)$ is the sigmoid function. 
+
+Define input value $z^{l+1} = W^{(l)}a^{(l)}+b^{(l)}$.
+
+\subsection{Backward Propagation}
+Loss function:
+\begin{align*}
+\mat{J}(W,b) = \frac{1}{T} \sum_{t} \frac{1}{2} \| h_{W,b}(x^{(i)})-y^{(i)}\|^2+\frac{\lambda}{2} \sum_{l=1}^{n_l-1} \sum_i \sum_j \big(W_{ij}^{(l)}\big)^2
+\end{align*}
+Batch gradient descent. For node $j$ at layer $l$. 
+
+Output layer:
+$$
+\delta_j^{(n_l)} = \frac{\partial}{\partial z_j^{(n_l)}} \frac{1}{2} \| y-h_{W, b}(x)\|^2 = -(y_j - a_j^{(n_l)}) \cdot \sigma'(z_j^{(n_l)})
+$$
+
+Hidden layer:
+$$
+\delta_j^{(l)} = \Big(\sum_i W_{ij}^{(l)} \delta_j^{(l+1)}\Big) \cdot \sigma'(z_j^{l})
+$$
+
+After vectorization: 
+\begin{align*}
+\delta^{(n_l)} &= -(y - a^{(n_l)}) \cdot  \sigma'(z^{(n_l)}) \\
+\delta^{(l)} &= \Big( W^{(l)}^\top \delta^{(l+1)}\Big) \cdot \sigma'(z^{l})
+\end{align*}
+$\cdot$ for element-wise multiplication. 
+
+Then for partial derivative 
+\begin{align*}
+\nabla_{W^{(l)}} \mat{J}(W, b; x, y) &= \delta^{(l+1)} a^{(l)}^\top \\
+\nabla_{b^{(l)}} \mat{J}(W, b; x, y) &= \delta^{(l+1)} 
+\end{align*}
+
+Then for batch gradient descent.
+\begin{align*}
+W^{(l)} &= W^{(l)} - \eta\Big[\frac{1}{T}\sum_t \nabla_{W_{(l)}} \mat{J}(W, b; x^{(t)}, y^{(t)}) + \lambda W^{(l)}\Big] \\ 
+b^{(l)} &= b^{(l)} - \eta \Big[\frac{1}{T}\sum_t \nabla_{b_{(l)}} \mat{J}(W, b; x^{(t)}, y^{(t)})\Big]
+\end{align*}
+
+
 \end{document}
 
