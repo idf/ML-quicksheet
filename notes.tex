@@ -244,8 +244,8 @@ $$
 
 \subsubsection{Classification}
 \begin{align*}
-\pi_1 P_1(x) > \pi_2 P_2(x) &\equiv x^\top Mx+2w^Tx \geq \theta \\
-&\equiv x^\top\Big(-\frac{1}{2}(\Sigma_1^{-1}-\Sigma_2^{-1})\Big)x+2\Big(\Sigma_1^{-1}\mu_1-\Sigma_2^{-1}\mu_2\Big)^Tx \geq \theta
+\pi_1 P_1(x) > \pi_2 P_2(x) &\equiv x^\top Mx+2w^\top x \geq \theta \\
+&\equiv x^\top\Big(-\frac{1}{2}(\Sigma_1^{-1}-\Sigma_2^{-1})\Big)x+2\Big(\Sigma_1^{-1}\mu_1-\Sigma_2^{-1}\mu_2\Big)^\top x \geq \theta
 \end{align*}
 Three cases of multivariate Gaussian generative model classification: 
 \begin{enumerate}
@@ -274,7 +274,7 @@ A^{-1} &=Q\Lambda^{-1}Q^\top
 \begin{align*}
 A &= U\Lambda V^\top\\
 AA^\top &= U\Lambda^2U^\top \\
-A^TA &= V\Lambda^2V^\top
+A^\top A &= V\Lambda^2V^\top
 \end{align*}
 
 \chapter{Discriminative Models}
@@ -380,9 +380,9 @@ x^{(j)}) \\
 
 Decision rule with kernel $\mat{K}$: 
 \begin{align*}
-h(x) &= \text{sign}(w \cdot \phi(x))  \\
-&= \text{sign}\Big(\sum_i \alpha_iy^{(i)} \phi(x^{(i)}) \cdot \phi(x)\Big) \\
-&= \text{sign}\Big(\sum_i \alpha_i y^{(i)} \mat{K}(x^{(i)}, x)\Big)
+h(x) &= \sign(w \cdot \phi(x))  \\
+&= \sign\Big(\sum_i \alpha_iy^{(i)} \phi(x^{(i)}) \cdot \phi(x)\Big) \\
+&= \sign\Big(\sum_i \alpha_i y^{(i)} \mat{K}(x^{(i)}, x)\Big)
 \end{align*}
 
 \section{Convex Surrogates for 0-1 Loss}
@@ -424,7 +424,7 @@ String kernel ($+\infty$ dim space: Hilbert space)
 
 Gaussian kernel
 $$
-k(x, x') = \exp\Big(\frac{-||x-x'||^2}{2\sigma^2}\Big)
+k(x, x') = \exp\Bigg(\frac{-||x-x'||^2}{2\sigma^2}\Bigg)
 $$
 
 
@@ -508,7 +508,7 @@ for t in xrange(T):
   calculate strength of update: $\alpha_t = \frac{1}{2}\ln {\frac{1+r_t}{1-r_t}}\in \R$
   reweight distribution: $D_{t+1(i)}\propto D_t(i)\exp\big(-\alpha_t y^{(i)}h_t(x^{(i)})\big)$
   
-return $H(x)=sign\Big(\sum_t \alpha_t h_t(x)\Big)$
+return $H(x)=\sign\Big(\sum_t \alpha_t h_t(x)\Big)$
 \end{python}
 
 \subsection{Error Rate}
@@ -527,7 +527,7 @@ $$
 
 Thus, 
 $$
-H(x) = sign\Big(\sum_t \alpha_t h_t(x)\Big)
+H(x) = \sign\Big(\sum_t \alpha_t h_t(x)\Big)
 $$
 
 is a linear classifier in the enhanced space $\phi$. 
@@ -644,7 +644,7 @@ var(u^\top X) &= \E(u^\top X-u^\top \mu)^2\\
 $x \mapsto$ multiple directions:
 
 $$
-eigen(\Sigma)
+\text{eigen}(\Sigma)
 $$
 
 $$
@@ -689,7 +689,7 @@ $k$ latent directions.
 
 \begin{figure}[!htp]
 \centering
-\subfloat{\includegraphics[scale=1.0]{collaborativeFiltering}}
+\subfloat{\includegraphics[scale=0.98]{collaborativeFiltering}}
 \caption{Collaborative Filtering. Notice that mat $W^\top$ is row-wise stacked by data points rather than latent vectors. }
 \label{fig:collaborativeFiltering}
 \end{figure}
@@ -802,7 +802,7 @@ Incur expected loss $\E_{i\sim p_t}[\ell_t^{(i)}]$, where $\ell_t^{(i)}=\ell(y_t
 
 regret = expected loss - loss of best learner: 
 $$
-regret(T) = \sum_{t=1}^\top \sum_{i=1}^N p_t^{(i)}\ell_t^{(i)} - \min_{1\leq i \leq N}\sum_{t=1}^\top\ell_t^{(i)}
+regret(T) = \sum_{t=1}^T \sum_{i=1}^N p_t^{(i)}\ell_t^{(i)} - \min_{1\leq i \leq N}\sum_{t=1}^\top\ell_t^{(i)}
 $$
 
 \section{Algorithm}
@@ -832,9 +832,9 @@ $$
 
 Then $L_T^\text{Hedge}=O(\sqrt{2T\ln N})$
 
-\chapter{Neural Network}
+\chapter{Neural Networks}
 
-\section{Supervised Neural Network}
+\section{Supervised Neural Networks}
 
 \begin{figure}[!htp]
 \centering
@@ -888,7 +888,7 @@ Then for batch gradient descent.
 W^{(l)} &= W^{(l)} - \eta\Big[\frac{1}{T}\sum_t \nabla_{W_{(l)}} \mat{J}(W, b; x^{(t)}, y^{(t)}) + \lambda W^{(l)}\Big] \\ 
 b^{(l)} &= b^{(l)} - \eta \Big[\frac{1}{T}\sum_t \nabla_{b_{(l)}} \mat{J}(W, b; x^{(t)}, y^{(t)})\Big]
 \end{align*}
-\section{Activation Function}
+\section{Activation Functions}
 \subsection{Sigmoid function}
 \begin{figure}[!htp]
 \centering
@@ -929,5 +929,28 @@ $$
 $$
 
 The derivative of softplus is the logistic function.
+
+\section{Convolution Neural Networks}
+\subsection{CNN Architecture}
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=1.30]{cnn}}
+\caption{CNN}
+\label{fig:cnn}
+\end{figure}
+\subsection{Convolving Layer}
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=1.30]{convolve}}
+\caption{Convolution}
+\label{fig:convolve}
+\end{figure}
+\subsection{Pooling Layer}
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=1.20]{pooling}}
+\caption{Pooling}
+\label{fig:pooling}
+\end{figure}
 \end{document}
 
