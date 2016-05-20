@@ -378,6 +378,13 @@ x^{(j)}) \\
 & \forall i,~0\leq \alpha_i \leq C
 \end{align*}
 
+Decision rule with kernel $\mat{K}$: 
+\begin{align*}
+h(x) &= \text{sign}(w \cdot \phi(x))  \\
+&= \text{sign}\Big(\sum_i \alpha_iy^{(i)} \phi(x^{(i)}) \cdot \phi(x)\Big) \\
+&= \text{sign}\Big(\sum_i \alpha_i y^{(i)} \mat{K}(x^{(i)}, x)\Big)
+\end{align*}
+
 \section{Convex Surrogates for 0-1 Loss}
 Convex loss functions to approximate 0-1 loss functions. 0-1 loss function is the ideal, but we need to use convex func as surrogate.
 
@@ -881,7 +888,46 @@ Then for batch gradient descent.
 W^{(l)} &= W^{(l)} - \eta\Big[\frac{1}{T}\sum_t \nabla_{W_{(l)}} \mat{J}(W, b; x^{(t)}, y^{(t)}) + \lambda W^{(l)}\Big] \\ 
 b^{(l)} &= b^{(l)} - \eta \Big[\frac{1}{T}\sum_t \nabla_{b_{(l)}} \mat{J}(W, b; x^{(t)}, y^{(t)})\Big]
 \end{align*}
+\section{Activation Function}
+\subsection{Sigmoid function}
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=1.20]{sigmoid}}
+\caption{Sigmoid Function}
+\label{fig:sigmoid}
+\end{figure}
+$$
+\sigma(z) = \frac{1}{1+\exp(-z)}
+$$
 
+Properties:
+\begin{align*}
+1-\sigma(z) &= \sigma(-z) \\
+\sigma'(z) &= \sigma(z)\sigma(-z)
+\end{align*}
 
+Can be derived from the sigmoid function graph. 
+
+\subsection{Rectified Linear Unites}
+\begin{figure}[!htp]
+\centering
+\subfloat{\includegraphics[scale=2.30]{rectifier}}
+\caption{Rectifier}
+\label{fig:rectifier}
+\end{figure}
+$$
+f(x) = \max(0, x)
+$$
+
+A smooth approximation to the rectifier is the analytic function - softplus function.
+$$
+f(x) = \ln(1 + e^x)
+$$
+
+$$
+\frac{\diff}{\diff x} \ln(1 + e^x) = \sigma(x)
+$$
+
+The derivative of softplus is the logistic function.
 \end{document}
 
