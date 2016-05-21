@@ -938,7 +938,13 @@ The derivative of softplus is the logistic function.
 \caption{CNN}
 \label{fig:cnn}
 \end{figure}
+
+Transform inoupt 3D volume to output 3D volume
 \subsection{Convolving Layer}
+$$
+sz'= (sz-fieldSz+2padSz)/strideSz+1
+$$
+
 \begin{figure}[!htp]
 \centering
 \subfloat{\includegraphics[scale=1.30]{convolve}}
