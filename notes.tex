@@ -436,6 +436,27 @@ $$
 , where $\mat{K}\in \R^{T\times T}$.
 
 \textbf{Mercer's} condition: $\mat{K}$ is PSD.
+\chapter{Regression}
+\section{Optimization problem}
+In \textbf{over-determined} system, no solution in closed form equation; thus need to transform the closed form eqn to min problem
+$$
+\mat{A}x=b \mapsto \min \|\mat{A}x-b\|_2^2
+$$
+
+To solve the optimization problem:
+\begin{align*}
+\nabla_x \|\mat{A}x-b\|_2^2 &= 0 \\
+2\mat{A}^\T(\mat{A}x-b) &= 0
+\end{align*}
+
+Compare:
+\begin{align*}
+x &= \mat{A}^{-1} b  \\
+x &= (\mat{A}^\T A)^{-1}\mat{A}^\T b
+\end{align*}
+$\mat{A}$ is $T\times dim$, thus too large to pseudo-inverse, thus Gradient Descent.
+
+
 
 \chapter{Richer Output Space} 
 \section{Multiclass classification}
@@ -499,32 +520,51 @@ $$
 Weighted weak classifier $h_t$
 
 \section{Boosting}
-\subsection{Algorithm}
+\subsection{AdaBoost Algorithm}
 \begin{python}[mathescape]
 $D_0(i)=\frac{1}{n}, \forall i$
 for t in xrange(T):
   train $h_t: \mat{X}\ra [-1, 1]$ using $D_t$
   calculate margin of success: $r_t=\sum_i D_t(i)y^{(i)}h_t(x^{(i)})\in [-1, 1]$
   calculate strength of update: $\alpha_t = \frac{1}{2}\ln {\frac{1+r_t}{1-r_t}}\in \R$
-  reweight distribution: $D_{t+1(i)}\propto D_t(i)\exp\big(-\alpha_t y^{(i)}h_t(x^{(i)})\big)$
+  reweight distribution: $D_{t+1}(i)\propto D_t(i)\exp\big(-\alpha_t y^{(i)}h_t(x^{(i)})\big)$
   
 return $H(x)=\sign\Big(\sum_t \alpha_t h_t(x)\Big)$
 \end{python}
 
-The margin of success is also known as correlation. 
+The margin of success is also known as correlation. Note the label domain is $[-1, +1]$. 
 \subsection{Error Rate}
+\subsubsection{Bound of Error Rate}
 Training error drop off:
 $$
 e^{-\gamma^2T/2}
 $$
-
 , where $|\sum_i D_t(i)y^{(i)}h_t(x^{(i)})|\geq \gamma$ differs from random by \textbf{margin} $\gamma$.
+
+\subsubsection{Analyzing the Training Error}
+\begin{align*}
+\varepsilon_t &= \hat{err}_{w_t}(h_t) \\
+&= \sum_{i=1}^{N} w_t (x_i) \boldsymbol{1}(h_t(x_i)\neq y) \\
+\end{align*}
+
+, where $w_t(x_i)$ is the $D_t(i)$.
+
+If $h_t$ is a random rule, then $\varepsilon_t = 0.5\sum_i w_t(x_i)=0.5$. 
+
+If $h_t$ is a weak rule, then $\varepsilon_t=\frac{1}{2}-\gamma_t$. 
 
 \subsection{Enhanced Sapce}
 Enhanced space: $\forall h \in \mat{H}$ corresponds to a feature 
 $$
 \phi(x) = \Big(h(x):h\in \mat{H}\Big)
 $$
+
+$\phi(x)$ represents the new space based. 
+
+Alternatively notation:
+\begin{align*}
+\vec{h}(x) = \Big(h_1(x), h_2(x), ..., h_{T}(x)\Big)
+\end{align*}
 
 Thus, 
 $$
@@ -533,7 +573,10 @@ $$
 
 is a linear classifier in the enhanced space $\phi$. 
 
-Boosting is a \textbf{coordinate descent} procedure for minimizing the loss.
+Boosting is a \textbf{coordinate descent} procedure for minimizing the loss. 
+
+\subsection{Variational optimization}
+Variational analysis, like gradient descent. think of the function as vec in $+\infty$ dim. Adaboost gd on the func vector.
 
 \section{Bagging}
 Sample with replacement, majority vote. 
@@ -559,8 +602,8 @@ Sum of distance to the nearest center.
 \subsection{Algorithm}
 Lloyd’s $k$-means algorithm - EM\ algorithm
 \begin{align*}
-S_i^{(t)}& = \big \{ x_p : \| x_p - m^{(t)}_i \|^2 \le \big \| x_p - m^{(t)}_j \|^2 \ \forall j, 1 \le j \le k \big\}  \\
-m^{(t+1)}_i &= \frac{1}{|S^{(t)}_i|} \sum_{x_j \in S^{(t)}_i} x_j 
+S_i^{(t)}& = \big \{ x_p : \| x_p - \mu^{(t)}_i \|^2 \le \big \| x_p - \mu^{(t)}_j \|^2 \ \forall j, 0 \le j < k \big\}  \\
+\mu^{(t+1)}_i &= \frac{1}{|S^{(t)}_i|} \sum_{x_j \in S^{(t)}_i} x_j 
 \end{align*}
 
 \subsection{Initialization}
@@ -569,7 +612,7 @@ m^{(t+1)}_i &= \frac{1}{|S^{(t)}_i|} \sum_{x_j \in S^{(t)}_i} x_j
 \item Extra centers, prune
 \item $k$-mean++: iterative add centers to $C$ from data points according to the distribution 
 $$
-Pr(x) \propto \big(\min_{z\in C}||x-z||\big)^2
+Pr(x) \propto \big(\min_{\mu \in C}||x-\mu||\big)^2
 $$
 
 
@@ -633,7 +676,7 @@ The mean is $u^\top\mu$
 
 The variance is $u^\top \Sigma u$:
 \begin{align*}
-var(u^\top X) &= \E(u^\top X-u^\top \mu)^2\\
+Var(u^\top X) &= \E(u^\top X-u^\top \mu)^2\\
 &= \E(u^\top(X-\mu))^2\\
 &= \E(u^\top(X-\mu)(X-\mu)^\top u)\\
 &= u^\top \E(X-\mu)(X-\mu)^\top u  \\
@@ -671,7 +714,7 @@ M &=UW^\top \\
 \hat M &=\hat U \hat W^\top
 \end{align*}
 
-, where $\hat U$ is the first $k$ cols of $U$, $\hat W^\top$ is the first $k$ rows of $\hat W$. For low-rank approximation. 
+, where $\hat U$ is the first $k$ cols of $U$, $\hat W^\top$ is the first $k$ rows of $\hat W^\top$. For low-rank approximation. 
 
 \subsection{Applications}
 \subsubsection{Latent semantic indexing (LSI)}
