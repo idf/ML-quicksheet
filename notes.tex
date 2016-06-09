@@ -526,7 +526,7 @@ $D_0(i)=\frac{1}{n}, \forall i$
 for t in xrange(T):
   train $h_t: \mat{X}\ra [-1, 1]$ using $D_t$
   calculate margin of success: $r_t=\sum_i D_t(i)y^{(i)}h_t(x^{(i)})\in [-1, 1]$
-  calculate strength of update: $\alpha_t = \frac{1}{2}\ln {\frac{1+r_t}{1-r_t}}\in \R$
+  calculate strength of update: $\alpha_t = \frac{1}{2}\ln {\frac{1+r_t}{1-r_t}}\in \R^+$
   reweight distribution: $D_{t+1}(i)\propto D_t(i)\exp\big(-\alpha_t y^{(i)}h_t(x^{(i)})\big)$
   
 return $H(x)=\sign\Big(\sum_t \alpha_t h_t(x)\Big)$
@@ -602,15 +602,15 @@ Sum of distance to the nearest center.
 \subsection{Algorithm}
 Lloyd’s $k$-means algorithm - EM\ algorithm
 \begin{align*}
-S_i^{(t)}& = \big \{ x_p : \| x_p - \mu^{(t)}_i \|^2 \le \big \| x_p - \mu^{(t)}_j \|^2 \ \forall j, 0 \le j < k \big\}  \\
-\mu^{(t+1)}_i &= \frac{1}{|S^{(t)}_i|} \sum_{x_j \in S^{(t)}_i} x_j 
+C_i^{(t)}& = \big \{ x_p : \| x_p - \mu^{(t)}_i \|^2 \le \big \| x_p - \mu^{(t)}_j \|^2 \ \forall j, 0 \le j < k \big\}  \\
+\mu^{(t+1)}_i &= \frac{1}{|C^{(t)}_i|} \sum_{x_j \in C^{(t)}_i} x_j 
 \end{align*}
 
 \subsection{Initialization}
 \begin{enumerate}
 \item Random
 \item Extra centers, prune
-\item $k$-mean++: iterative add centers to $C$ from data points according to the distribution 
+\item $k$-mean++: iteratively add centers to $C$ from data points according to the following distribution 
 $$
 Pr(x) \propto \big(\min_{\mu \in C}||x-\mu||\big)^2
 $$
